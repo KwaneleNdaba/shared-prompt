@@ -11,11 +11,11 @@ const [providers , setProviders ] = useState(null)
 
 useEffect(()=>{
 
-  const setProviders = async () => {
+  const SetProviders = async () => {
     const response = await getProvider()
-    setProviders(setProviders)
+    setProviders(SetProviders)
   }
-
+    setProviders(SetProviders)
 },[])
 
   return (
