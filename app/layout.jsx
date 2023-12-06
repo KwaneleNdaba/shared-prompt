@@ -1,6 +1,9 @@
 import React, { Children } from 'react'
 import "@styles/global.css"
 import Nav from '@components/Nav'
+import { SessionProvider } from 'next-auth/react'
+import Provider from '@components/Provider'
+
 
 export const metadata={
     title : "Prompts",
@@ -11,6 +14,8 @@ function RootLayout({children}) {
   return (
     <html lang = "en">
     <body>
+      <Provider>
+    
         <div className="main">
             <div className='gradient'/>
         </div>
@@ -18,6 +23,8 @@ function RootLayout({children}) {
           <Nav/>
             {children}
         </main>
+            
+      </Provider>
     </body>
     </html>
   )
