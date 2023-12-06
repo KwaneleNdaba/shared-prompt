@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { signIn, signOut, useSession, getProviders } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 function Nav() {
   const isUserLoggedIn = true;
@@ -20,7 +21,13 @@ function Nav() {
     setUpProviders();
   }, []);
 
+  const router = useRouter()
 
+  const logout = () => {
+    setToogleDropdown(false)
+  
+    router.push("/")
+  }
 
   return (
     <nav className="flex-between w-full mb-16 pt-13">
@@ -102,7 +109,7 @@ function Nav() {
                 </Link>
                 <button
                   type="button"
-                  onClick={() => setToogleDropdown(false)}
+                  onClick={logout}
                   className="mt-5 w-full black_btn"
                 >
                   Sign Out

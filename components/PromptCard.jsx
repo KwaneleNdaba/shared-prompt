@@ -1,17 +1,30 @@
 "use client";
 import Image from "next/image";
 import React, { useState } from "react";
+import { useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
+
 
 function PromptCard({ post, handleClickTag, handleEdit, handleDelete }) {
   console.log("post", post);
   const [copied, setCopy] = useState("");
 
+  const pathName = usePathname()
+  const router = useRouter()
+
+  const {data :session} = useSession()
 
   const handleCopy = () => {
     setCopy(post.prompt)
     navigator.clipboard.writeText(post.prompt)//be able to copy
     setTimeout(()=> setCopy(""), 3000)
   }
+
+  console.log("user", session?.user.id)
+  
+  console.log("creator",  post)
+
 
   return (
     <div className="prompt_card">
@@ -48,6 +61,18 @@ function PromptCard({ post, handleClickTag, handleEdit, handleDelete }) {
       </div>
       <p className="my-4 font-satoshi text-sm text-gray-700">{post.prompt}</p>
       <p onClick={() => handleClickTag && handleClickTag(post.tag) } className="font -inter text-sm blue_gradient cursor-pointer">#{post.tag}</p>
+    
+      {session?.user.id === post.creator._id && pathName == "/profile" && (
+      <div className="mt-5 flex-center gap-4 border-t border-gray-100-pt-3">
+        <p onClick = {handleEdit} className="font-inter text-sm green_gradient cursor-pointer">
+        Edit
+        </p>
+        <p onClick = {handleDelete} className="font-inter text-sm orange_gradient cursor-pointer">
+        Delete
+        </p>
+        </div>
+    ) }
+    
     </div>
   );
 }
