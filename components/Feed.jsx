@@ -3,43 +3,68 @@ import React, { useEffect, useState } from 'react'
 import PromptCard from './PromptCard'
 
 function Feed() {
-  const [searchText,setSearchText] = useState("")
-  const [posts, setPosts] = useState([])
+  const [searchText, setSearchText] = useState("");
+  const [posts, setPosts] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]); 
 
   const handleSearchChange = (e) => {
-    setSearchText(e.target.value)
-  }
+    setSearchText(e.target.value);
+    filterPosts(e.target.value);
+  };
 
+  const filterPosts = (searchValue) => {
+    const filteredByUser = posts.filter((post) => post.creator.username.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    setFilteredPosts(filteredByUser); 
+
+    if(filteredByUser.length === 0){
+      
+    const filterdByPrompt = posts.filter((post) => post.prompt.toLowerCase().includes(searchValue.toLowerCase()))
+    setFilteredPosts(filterdByPrompt)
+
+    if(filterdByPrompt.length == 0){
+      const filterdByTag = posts.filter((post) => post.tag.toLowerCase().includes(searchValue.toLowerCase()))
+      setFilteredPosts(filterdByTag)
+    }
+    }
+
+
+  };
+
+  const searchValue = (value) => {
+    setSearchText(value)
+  }
 
   useEffect(() => {
     const fetchPost = async () => {
-    const response = await fetch("/api/prompt")
-    const data = await response.json()
-setPosts(data)
-    }
-  
- fetchPost()
-  }, [])
-  
+      const response = await fetch("/api/prompt");
+      const data = await response.json();
+      setPosts(data);
+      setFilteredPosts(data);
+    };
+
+    fetchPost();
+  }, []);
 
   return (
-  <section className="feed">
-    <form className='relative w-full flex-center'>
-      <input type="text" className="search_input peer"   
-      placeholder='search for prompt or a user'
-      value = {searchText}
-      onChange={handleSearchChange}
-      required
+    <section className="feed">
+      <form className="relative w-full flex-center">
+        <input
+          type="text"
+          className="search_input peer"
+          placeholder="Search for prompt or a user"
+          value={searchText}
+          onChange={handleSearchChange}
+          required
+        />
+      </form>
+
+      <PromptCardList
+        data={filteredPosts} // Render filteredPosts instead of posts
+        handleClick={searchValue}
       />
-
-    </form>
-
-    <PromptCardList
-    data = {posts}
-    handleClick = {() => {}}
-    />
-  </section>
-  )
+    </section>
+  );
 }
 
 export default Feed

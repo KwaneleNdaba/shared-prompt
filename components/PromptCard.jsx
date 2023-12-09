@@ -38,7 +38,7 @@ function PromptCard({ post, handleClickTag, handleEdit, handleDelete }) {
             height={40}
           />
           <div className="flex flex-col">
-            <h3 className="font-satoshi text-gray-900 font-semibold">
+            <h3 onClick={() => handleClickTag && handleClickTag(post.creator.username) }  className="font-satoshi text-gray-900 font-semibold" >
               {post.creator.username}
             </h3>
             <p className="font-inter text-sm text-gray-500">
