@@ -1,9 +1,12 @@
 "use client"
 import MyProfile from '@components/MyProfile'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { useRouter ,useSearchParams } from 'next/navigation'
 import Router from 'next/router'
 import React,{useState,useEffect} from 'react'
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
+
 
 function Profile() {
 
@@ -11,17 +14,24 @@ function Profile() {
   const [posts, setPosts] = useState([])
   // console.log("Posts",posts)
   // console.log("user", session?.user.id)
-
+  const searchParams = useSearchParams()
+  const userId = cookies.get('myUserId');
+  console.log("user", userId)
 
   const router = useRouter()
   useEffect(() => {
+    const userId = localStorage.getItem("creator-id")
+
     const fetchPost = async () => {
-    const response = await fetch(`/api/users/${session?.user.id}/posts`)
+    const response = await fetch(`/api/users/${userId}/posts`)
     const data = await response.json()
-setPosts(data)
+    setPosts(data)
+
     }
+    
+
   
-    if(session?.user.id)fetchPost();
+    if(userId)fetchPost();
   }, [])
   
 
@@ -55,7 +65,7 @@ const handleDelete = async (postId) => {
   return (
    <MyProfile 
    name = {posts[0]?.creator.username ? `${posts[0]?.creator.username}'s` : "My"}
-   desc= "Welcome to your personalized profile page"
+   desc= "Welcome to your personalized profile"
    data = {posts}
    handleDelete={handleDelete}
    handleEdit = {handleEdit}

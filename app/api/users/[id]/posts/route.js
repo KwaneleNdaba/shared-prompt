@@ -14,3 +14,4 @@ export const GET = async (req, {params}) => {
         return new Response("Failed to create a get all prompts", {status:500})
     }
 }
+

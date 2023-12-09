@@ -1,7 +1,8 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import PromptCard from './PromptCard'
-
+import Cookies from 'universal-cookie';
+const cookies = new Cookies()
 function Feed() {
   const [searchText, setSearchText] = useState("");
   const [posts, setPosts] = useState([]);
@@ -33,6 +34,7 @@ function Feed() {
 
   const searchValue = (value) => {
     setSearchText(value)
+    filterPosts(value)
   }
 
   useEffect(() => {
@@ -41,10 +43,12 @@ function Feed() {
       const data = await response.json();
       setPosts(data);
       setFilteredPosts(data);
+      console.log("data: " + response)
     };
 
     fetchPost();
   }, []);
+
 
   return (
     <section className="feed">
@@ -71,13 +75,21 @@ export default Feed
 
 
 const PromptCardList = ({data, handleClick}) => {
+
+  const saveId = (id) => {
+    localStorage.setItem("creator-id",id)
+  }
+
   return(
     <div className="mt-16 prompt_layout">
     {data.map(prompt => (
-      <PromptCard key = {prompt._id} 
+      <div onClick={() => saveId(prompt.creator._id)}>
+        <PromptCard 
+      key = {prompt._id} 
       post = {prompt}
       handleClickTag= {handleClick} />
       
+        </div>
     ))}
     </div>
   )
