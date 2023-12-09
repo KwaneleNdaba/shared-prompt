@@ -65,7 +65,7 @@ const handleDelete = async (postId) => {
   return (
    <MyProfile 
    name = {posts[0]?.creator.username ? `${posts[0]?.creator.username}'s` : "My"}
-   desc= {posts[0]?.creator.username ? `"Welcome to ${posts[0]?.creator.username}'s personalized profile` : "Welcome to your personalized profile"}  
+   desc= {posts[0]?.creator.username ? `Welcome to ${posts[0]?.creator.username}'s personalized profile` : "Welcome to your personalized profile"}  
    data = {posts}
    handleDelete={handleDelete}
    handleEdit = {handleEdit}
