@@ -26,13 +26,29 @@ setPosts(data)
   
 
 
-const handleEdit = (post) => {
-router.push(`/update-prompt?id=${post.id}`)
+const handleEdit = (postId) => {
+ // debugger;
+router.push(`/update-prompt?id=${postId}`)
 }
 
 
-const handleDelete = async () => {
-
+const handleDelete = async (postId) => {
+  const hasConfirmed = confirm("Are you sure you want to delete this prompt?")
+  
+  if(hasConfirmed){
+    try {
+      debugger;
+      await fetch(`/api/prompt/${postId}`,{
+        method: "DELETE",
+      })
+      debugger;
+      const filterPosts = posts.filter(p => p._id !== postId );
+      setPosts(filterPosts)
+      
+    } catch (error) {
+      console.log("Error: ", error)
+    }
+  }
 
 }
 

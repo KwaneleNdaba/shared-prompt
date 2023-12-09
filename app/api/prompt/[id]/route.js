@@ -20,7 +20,7 @@ export const PATCH = async (req, {params}) => {
         try {
             await connectToDb()
             const existingPrompt =  await Prompt.findById(params.id);
-
+         
             if(!existingPrompt) return new Response("Prompt not found", {status: 404})
                existingPrompt.prompt = prompt; // the one we passed from the request
             existingPrompt.tag = tag ;
@@ -35,7 +35,7 @@ export const PATCH = async (req, {params}) => {
 export const DELETE = async (req, {params}) => {
     try {
         await connectToDb();
-        await Prompt.findByIdAndRemove(params.id);
+        await Prompt.findByIdAndDelete(params.id);
         return new Response("Prompt deleted", {status:201})
 
     } catch (error) {
